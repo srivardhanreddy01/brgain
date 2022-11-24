@@ -3,6 +3,7 @@ package com.example.brgain.controller;
 import com.example.brgain.model.User;
 import com.example.brgain.model.core.ApiResponse;
 import com.example.brgain.repository.UserRepository;
+import com.example.brgain.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,10 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping(path = "test")
+@RequestMapping(path = "user")
 public class UserController {
   @Autowired
   private UserRepository userRepository;
+
+
+  @Autowired
+  private UserService userService;
 
   @RequestMapping(path="/add" , method = RequestMethod.POST)
   public ApiResponse<?>  addNewUser (@RequestParam String name,
@@ -53,4 +58,29 @@ public class UserController {
 
 //    return "Test";
   }
+
+    @RequestMapping(path="/login" , method = RequestMethod.POST)
+  public ApiResponse loginUser(@RequestParam String email,
+                               @RequestParam String password) {
+
+    return new ApiResponse(userService.authenticationLogin(email, password));
+  }
+
+    @RequestMapping(path="/register" , method = RequestMethod.POST)
+  public ApiResponse loginUser(@RequestParam String username,
+                        @RequestParam String password,
+                        @RequestParam String email
+                        ) {
+    User user  = User.builder()
+            .userName(username)
+            .password(password)
+            .email(email)
+            .build();
+
+    return  new ApiResponse(userService.registerUser(user));
+
+  }
+
+
+
 }
