@@ -50,14 +50,6 @@ public class UserController {
   }
 
 
-  @RequestMapping(path="/allTest" , method = RequestMethod.GET)
-  public List<User> getAllUser() {
-//    return userRepository.getUsers();
-    List<User> userList = userRepository.findAll();
-    return userList;
-
-//    return "Test";
-  }
 
     @RequestMapping(path="/login" , method = RequestMethod.POST)
   public ApiResponse loginUser(@RequestParam String email,
