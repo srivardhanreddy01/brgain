@@ -1,6 +1,11 @@
 package com.example.brgain.service;
 
+import com.example.brgain.model.ItemEntry;
+import com.example.brgain.model.ShoppingList;
+import com.example.brgain.model.ShoppingListItem;
 import com.example.brgain.model.User;
+import com.example.brgain.repository.ShoppingListItemRepository;
+import com.example.brgain.repository.ShoppingListRepository;
 import com.example.brgain.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +20,12 @@ public class UserService {
 
   @Autowired
   private UserRepository userRepository;
+
+  @Autowired
+  private ShoppingListRepository shoppingListRepository;
+
+  @Autowired
+  private ShoppingListItemRepository shoppingListItemRepository;
 
 
 
@@ -39,6 +50,31 @@ public class UserService {
       throw new IllegalStateException("User with email Id already exists, try to login instead.");
     }
     return userRepository.save(user);
+  }
+
+
+  public void addItemToShoppingList(Integer userId, Integer itemEntryId){
+    ShoppingList shoppingList = shoppingListRepository.findByUserId(userId);
+
+    if(Objects.isNull(shoppingList)){
+      shoppingList = ShoppingList.builder()
+              .userId(userId)
+              .build();
+      shoppingList = shoppingListRepository.save(shoppingList);
+    }
+
+    ShoppingListItem shoppingListItem = ShoppingListItem.builder()
+                    .itemEntryId(itemEntryId)
+                    .shoppingListId(shoppingList.getShoppingListId())
+                    .build();
+    shoppingListItemRepository.save(shoppingListItem);
+
+  }
+  public List<ItemEntry> getShoppingListItemsByUser(Integer userId){
+
+    List<ItemEntry> itemEntriesByUserId = shoppingListRepository.findItemEntriesByUserId(userId);
+    return itemEntriesByUserId;
+
   }
 
 }

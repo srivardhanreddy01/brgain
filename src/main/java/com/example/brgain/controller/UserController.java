@@ -58,7 +58,7 @@ public class UserController {
     return new ApiResponse(userService.authenticationLogin(email, password));
   }
 
-    @RequestMapping(path="/register" , method = RequestMethod.POST)
+  @RequestMapping(path="/register" , method = RequestMethod.POST)
   public ApiResponse loginUser(@RequestParam String username,
                         @RequestParam String password,
                         @RequestParam String email
@@ -71,6 +71,25 @@ public class UserController {
 
     return  new ApiResponse(userService.registerUser(user));
 
+  }
+
+
+  @RequestMapping(path="/shoppingList" , method = RequestMethod.POST)
+  public ApiResponse addItemEntryToCart(
+          @RequestParam("itemEntryId") Integer itemEntryId,
+          @RequestParam("userId") Integer userId
+  ){
+    userService.addItemToShoppingList(userId, itemEntryId);
+    return new ApiResponse("Successfully added to cart");
+  }
+
+
+
+  @RequestMapping(path="/shoppingList" , method = RequestMethod.GET)
+  public ApiResponse getItemEntriesByUserId(
+          @RequestParam("userId") Integer userId
+  ){
+    return new ApiResponse(userService.getShoppingListItemsByUser(userId));
   }
 
 

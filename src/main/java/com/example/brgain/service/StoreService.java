@@ -42,7 +42,7 @@ public class StoreService {
     if(Objects.isNull(userId) || userId <= 0 ){
       throw new IllegalArgumentException("Input UserID is null");
     }
-    return userStoreMapRepository.findAllStoresForUser(userId);
+    return userStoreMapRepository.findAllStoresForUser(userId.toString());
   }
 
   public List<Category> findAllCategories(){

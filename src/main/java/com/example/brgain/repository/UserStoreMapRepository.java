@@ -13,5 +13,5 @@ public interface UserStoreMapRepository  extends JpaRepository<UserStoreMap, Use
 
   @Query("select s from UserStoreMap  usm join Store  s on usm.storeId = s.storeId " +
           "where usm.userId = ?1 ")
-  public List<Store> findAllStoresForUser(Integer userId);
+  public List<Store> findAllStoresForUser(String userId);
 }
